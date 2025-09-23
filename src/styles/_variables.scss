@@ -1,5 +1,4 @@
-@import "screen";
-@import "palette";
+@use "palette" as p;
 
 // Containers
 $margin-default: 10px !default;
@@ -9,11 +8,11 @@ $font-family-default: "Lato" !default;
 $font-size-default: 20px !default;
 $font-weight-default: 300 !default;
 $line-height-base: 1.5 !default;
-$font-color-default: $text-color;
+$font-color-default: p.$text-color;
 
 // Borders
 $enable-rounded: true !default;
-$border-color-default: $thin-lines;
+$border-color-default: p.$thin-lines;
 $border-default: solid 1px $border-color-default !default;
 $border-radius-default: 5px !default;
 
@@ -24,4 +23,4 @@ $box-shadow-default: $box-shadow-position-default rgba(224, 224, 224, 1);
 
 // Transitions
 $enable-transitions: true !default;
-$transition-base: all .2s ease-in-out !default;
+$transition-base: all 0.2s ease-in-out !default;

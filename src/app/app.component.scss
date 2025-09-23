@@ -1,19 +1,20 @@
-@import "../styles/init-component";
-@import "../styles/variables";
+@use "../styles/init-component";
+@use "../styles/variables" as vars;
+@use "../styles/screen" as screen;
 
 $container-padding: 30px;
 
 app-header {
-  box-shadow: $box-shadow-default;
+  box-shadow: vars.$box-shadow-default;
 }
 
 .container {
-  margin: $margin-default auto;
+  margin: vars.$margin-default auto;
   padding: $container-padding;
   box-sizing: border-box;
 
-  @each $type, $size in $screen-min-sizes {
-    @include screen-size($type) {
+  @each $type, $size in screen.$screen-min-sizes {
+    @include screen.screen-size($type) {
       width: $size;
     }
   }
@@ -24,7 +25,7 @@ app-header {
 }
 
 .component {
-  padding: $margin-default;
+  padding: vars.$margin-default;
 
   .fake-component {
     width: 100%;
@@ -36,17 +37,15 @@ h3 {
 }
 
 .component-description {
-  padding: $margin-default;
+  padding: vars.$margin-default;
 
   img {
     display: block;
     margin: 0 auto;
     width: 50%;
   }
-
 }
 
 video {
   width: 100%;
 }
-

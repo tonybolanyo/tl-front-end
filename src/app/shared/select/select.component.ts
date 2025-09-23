@@ -1,21 +1,30 @@
 import {
-  Component, Input, QueryList, ContentChildren,
-  AfterContentInit, Output, EventEmitter, OnInit, forwardRef
+  Component,
+  Input,
+  QueryList,
+  ContentChildren,
+  AfterContentInit,
+  Output,
+  EventEmitter,
+  OnInit,
+  forwardRef,
 } from '@angular/core';
-import {AbstractNgModel} from '../model/abstract-ngmodel';
-import {SelectItemComponent} from './select-item.component';
-import {ngModelProvider} from '../model/ng-model-config';
+import { AbstractNgModel } from '../model/abstract-ngmodel';
+import { SelectItemComponent } from './select-item.component';
+import { ngModelProvider } from '../model/ng-model-config';
 import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
-  providers: [ngModelProvider(SelectComponent)]
+  providers: [ngModelProvider(SelectComponent)],
+  imports: [SelectItemComponent],
 })
-export class SelectComponent extends AbstractNgModel<any> implements OnInit,
-                                                                     AfterContentInit {
-
+export class SelectComponent
+  extends AbstractNgModel<any>
+  implements OnInit, AfterContentInit
+{
   @Input()
   multiple = false;
 
@@ -61,14 +70,15 @@ export class SelectComponent extends AbstractNgModel<any> implements OnInit,
 
   doCheck() {
     if (this.multiple) {
-      this.children.forEach(child => {
+      this.children.forEach((child) => {
         child.selected =
-          (this.model.filter((id: any) => child.value === id).length > 0);
+          this.model.filter((id: any) => child.value === id).length > 0;
       });
     } else {
-      if (typeof(this.model) !== 'undefined') {
-        let selectedChild = this.children
-          .find(child => child.value === this.model);
+      if (typeof this.model !== 'undefined') {
+        let selectedChild = this.children.find(
+          (child) => child.value === this.model,
+        );
         if (selectedChild) {
           selectedChild.selected = true;
         }
@@ -114,11 +124,10 @@ export class SelectComponent extends AbstractNgModel<any> implements OnInit,
   }
 
   private unselectOthers(child: SelectItemComponent) {
-    this.children.forEach(c => {
+    this.children.forEach((c) => {
       if (c !== child) {
         c.selected = false;
       }
     });
   }
-
 }

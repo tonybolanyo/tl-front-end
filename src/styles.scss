@@ -1,16 +1,22 @@
-@import "../node_modules/normalize.css/normalize";
-@import "./styles/buttons/buttons";
-@import "./styles/fonts";
-@import "./styles/variables";
+@use "../node_modules/normalize.css/normalize";
+@use "./styles/buttons/buttons";
+@use "./styles/fonts";
+@use "./styles/variables" as vars;
+@use "./styles/palette" as palette;
 
 body {
-  font-family: $font-family-default;
-  font-weight: $font-weight-default;
-  font-size: $font-size-default;
-  color: $font-color-default;
-  background-color: $gray-3;
+  font-family: vars.$font-family-default;
+  font-weight: vars.$font-weight-default;
+  font-size: vars.$font-size-default;
+  color: vars.$font-color-default;
+  background-color: palette.$gray-3;
 }
 
-h1, h2, h3, h4, h5, h6 {
-  color: $font-color-default;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: vars.$font-color-default;
 }

@@ -1,26 +1,27 @@
-@import "../containers/border-radius";
-@import "../transitions/transition";
-@import "../shadows/box-shadow";
-@import "mixins";
-@import "variables";
-@import "../variables";
+@use "../containers/border-radius";
+@use "../transitions/transition" as t;
+@use "../shadows/box-shadow" as bx;
+@use "mixins" as mixin;
+@use "button-variables" as btnvars;
+@use "../variables" as vars;
+@use "../palette" as palette;
 
 .btn {
   display: inline-block;
-  font-weight: $btn-font-weight-default;
+  font-weight: btnvars.$btn-font-weight-default;
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
   user-select: none;
-  border: $btn-border-default;
-  @include button-size(
-      $btn-padding-y,
-      $btn-padding-x,
-      $btn-font-size-default,
-      $btn-line-height,
-      $btn-border-radius
+  border: btnvars.$btn-border-default;
+  @include mixin.button-size(
+    btnvars.$btn-padding-y,
+    btnvars.$btn-padding-x,
+    btnvars.$btn-font-size-default,
+    btnvars.$btn-line-height,
+    btnvars.$btn-border-radius
   );
-  @include transition($btn-transition);
+  @include t.transition(btnvars.$btn-transition);
 
   &:hover,
   &.hover {
@@ -36,27 +37,31 @@
   // Disabled comes first so active can properly restyle
   &.disabled,
   &:disabled {
-    opacity: .65;
-    @include box-shadow(none);
+    opacity: 0.65;
+    @include bx.box-shadow(none);
   }
 
   &:active,
   &.active {
     background-image: none;
-    @include box-shadow($btn-active-box-shadow);
+    @include bx.box-shadow(btnvars.$btn-active-box-shadow);
   }
 }
 
 .btn-primary {
-  @include button-variant($font-color-default, $white, $border-color-default);
+  @include mixin.button-variant(
+    vars.$font-color-default,
+    palette.$white,
+    vars.$border-color-default
+  );
 }
 
 .btn-sm {
-  @include button-size(
-      $btn-sm-padding-y,
-      $btn-sm-padding-x,
-      $btn-sm-font-size,
-      $btn-sm-line-height,
-      $btn-border-radius
+  @include mixin.button-size(
+    btnvars.$btn-sm-padding-y,
+    btnvars.$btn-sm-padding-x,
+    btnvars.$btn-sm-font-size,
+    btnvars.$btn-sm-line-height,
+    btnvars.$btn-border-radius
   );
 }

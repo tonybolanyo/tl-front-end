@@ -1,0 +1,30 @@
+@use "../variables" as vars;
+@use "../_palette" as palette;
+
+$btn-padding-y: 5px;
+$btn-padding-x: 12px;
+
+$btn-font-size-default: vars.$font-size-default;
+$btn-font-weight-default: vars.$font-weight-default;
+$btn-line-height: vars.$line-height-base;
+
+$btn-border-default: solid 1px transparent;
+$btn-border-radius: vars.$border-radius-default;
+
+$btn-transition: all 0.2s ease-in-out !default;
+$btn-box-shadow:
+  inset 0 1px 0 rgba(palette.$white, 0.15),
+  0 1px 1px rgba(#000, 0.075) !default;
+
+// Active
+$btn-active-box-shadow: inset 0 3px 5px rgba(#000, 0.125) !default;
+
+// Focus
+$btn-focus-box-shadow: 0 0 0 2px rgba(palette.$gray-3, 0.25) !default;
+
+// Sizes
+$btn-sm-padding-y: 2px !default;
+$btn-sm-padding-x: 6px !default;
+
+$btn-sm-font-size: 12px !default;
+$btn-sm-line-height: 1.2 !default;

@@ -1,7 +1,7 @@
-@import "../variables";
+@use "../variables" as vars;
 
 @mixin box-shadow($shadow...) {
-  @if $enable-shadows {
+  @if vars.$enable-shadows {
     box-shadow: $shadow;
   }
 }

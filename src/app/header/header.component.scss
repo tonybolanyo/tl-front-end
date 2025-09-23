@@ -1,12 +1,13 @@
-@import "../../styles/init-component";
-@import "../../styles/variables";
+@use "../../styles/init-component";
+@use "../../styles/variables" as vars;
+@use "../../styles/palette" as palette;
 
 $app-header-height: 50px;
 
 :host {
   text-align: center;
-  padding: $margin-default;
-  background-color: $brand-primary;
+  padding: vars.$margin-default;
+  background-color: palette.$brand-primary;
 }
 
 img {

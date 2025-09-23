@@ -1,4 +1,6 @@
-$screen-types: ('xs', 'sm', 'md', 'lg');
+@use "sass:map";
+
+$screen-types: ("xs", "sm", "md", "lg");
 
 $screen-xs: 576px !default;
 $screen-sm: 768px !default;
@@ -9,9 +11,8 @@ $screen-min-sizes: (
   xs: $screen-xs,
   sm: $screen-sm,
   md: $screen-md,
-  lg: $screen-lg
+  lg: $screen-lg,
 );
-
 
 @mixin breakpoint-max($max) {
   @media screen and (max-width: $max) {
@@ -50,16 +51,14 @@ $screen-min-sizes: (
 }
 
 @mixin screen-size($screen-type) {
-  @if ($screen-type == 'xs') {
+  @if ($screen-type == "xs") {
     @include screen-xs() {
       @content;
     }
   } @else {
-    $min: map-get($screen-min-sizes, $screen-type);
+    $min: map.get($screen-min-sizes, $screen-type);
     @include breakpoint-min($min) {
       @content;
     }
   }
 }
-
-

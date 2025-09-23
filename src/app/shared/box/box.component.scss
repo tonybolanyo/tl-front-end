@@ -1,10 +1,11 @@
-@import "../../../styles/init-component";
-@import "../../../styles/variables";
+@use "../../../styles/init-component";
+@use "../../../styles/variables" as vars;
+@use "../../../styles/palette" as palette;
 
 :host {
-  background-color: $white;
-  border: $border-default;
-  border-radius: $border-radius-default;
-  margin-bottom: $margin-default;
-  box-shadow: $box-shadow-default;
+  background-color: palette.$white;
+  border: vars.$border-default;
+  border-radius: vars.$border-radius-default;
+  margin-bottom: vars.$margin-default;
+  box-shadow: vars.$box-shadow-default;
 }

@@ -1,22 +1,28 @@
-@import "../containers/border-radius";
-@import "../shadows/box-shadow";
-@import "variables";
+@use "../containers/border-radius" as br;
+@use "../shadows/box-shadow" as bx;
+@use "button-variables" as btnvars;
+@use "sass:color";
 
-@mixin button-size($padding-y, $padding-x, $font-size, $line-height, $border-radius) {
+@mixin button-size(
+  $padding-y,
+  $padding-x,
+  $font-size,
+  $line-height,
+  $border-radius
+) {
   padding: $padding-y $padding-x;
   font-size: $font-size;
   line-height: $line-height;
-  @include border-radius($border-radius);
+  @include br.border-radius($border-radius);
 }
 
 @mixin button-variant($color, $background, $border) {
-  $active-background: darken($background, 10%);
-  $active-border: darken($border, 12%);
-
+  $active-background: color.scale($background, $lightness: -10%);
+  $active-border: color.adjust($color, $lightness: -12%);
   color: $color;
   background-color: $background;
   border-color: $border;
-  @include box-shadow($btn-box-shadow);
+  @include bx.box-shadow(btnvars.$btn-box-shadow);
 
   &:hover,
   &.hover {
