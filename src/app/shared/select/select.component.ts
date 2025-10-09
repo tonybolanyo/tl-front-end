@@ -15,6 +15,7 @@ import { ngModelProvider } from '../model/ng-model-config';
 import { Subject } from 'rxjs';
 
 @Component({
+  standalone: true,
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],

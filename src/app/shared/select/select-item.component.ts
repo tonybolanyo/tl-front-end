@@ -10,6 +10,7 @@ import {
 import { SelectComponent } from './select.component';
 
 @Component({
+  standalone: true,
   selector: 'app-select-item',
   templateUrl: './select-item.component.html',
   styleUrls: ['./select-item.component.scss'],
