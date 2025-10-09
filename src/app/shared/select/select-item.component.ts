@@ -4,10 +4,10 @@ import {
   HostListener,
   HostBinding,
   Host,
-  forwardRef,
   Inject,
+  Optional,
 } from '@angular/core';
-import { SelectComponent } from './select.component';
+import { ISelectComponent, SELECT_COMPONENT_TOKEN } from './select.interface';
 
 @Component({
   standalone: true,
@@ -24,8 +24,9 @@ export class SelectItemComponent {
 
   constructor(
     @Host()
-    @Inject(forwardRef(() => SelectComponent))
-    private parent?: SelectComponent,
+    @Optional()
+    @Inject(SELECT_COMPONENT_TOKEN)
+    private parent?: ISelectComponent,
   ) {}
 
   @HostListener('click')

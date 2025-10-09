@@ -7,24 +7,30 @@ import {
   Output,
   EventEmitter,
   OnInit,
-  forwardRef,
 } from '@angular/core';
 import { AbstractNgModel } from '../model/abstract-ngmodel';
 import { SelectItemComponent } from './select-item.component';
 import { ngModelProvider } from '../model/ng-model-config';
 import { Subject } from 'rxjs';
+import { ISelectComponent, SELECT_COMPONENT_TOKEN } from './select.interface';
 
 @Component({
   standalone: true,
   selector: 'app-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss'],
-  providers: [ngModelProvider(SelectComponent)],
+  providers: [
+    ngModelProvider(SelectComponent),
+    {
+      provide: SELECT_COMPONENT_TOKEN,
+      useExisting: SelectComponent,
+    },
+  ],
   imports: [SelectItemComponent],
 })
 export class SelectComponent
   extends AbstractNgModel<any>
-  implements OnInit, AfterContentInit
+  implements OnInit, AfterContentInit, ISelectComponent
 {
   @Input()
   multiple = false;
@@ -45,7 +51,7 @@ export class SelectComponent
   @Output()
   change = new EventEmitter<any>();
 
-  @ContentChildren(forwardRef(() => SelectItemComponent))
+  @ContentChildren(SelectItemComponent)
   children!: QueryList<SelectItemComponent>;
 
   private modelChecker = new Subject<any>();
