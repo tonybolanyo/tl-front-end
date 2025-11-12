@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, forwardRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Day } from './day';
 
@@ -17,7 +17,7 @@ import { Day } from './day';
     }
   ]
 })
-export class SelectorComponent implements ControlValueAccessor, AfterViewInit {
+export class SelectorComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
   @Input() days: Day[] = [];
   @Input() multiple: boolean = false;
   @Input() formControlName: string = '';
@@ -28,27 +28,62 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit {
   daysInMonth: Day[] = [];
   canScrollLeft: boolean = false;
   canScrollRight: boolean = false;
+  private dayButtonWidth: number = 0;
+  private gapSize: number = 12;
 
   private onChange: (value: any) => void = () => { };
   private onTouched: () => void = () => { };
 
   ngOnInit() {
-    this.generateDaysInMonth();
+    this.generateDaysForMultipleMonths();
   }
 
   ngAfterViewInit() {
-    setTimeout(() => this.checkScrollButtons(), 100);
+    setTimeout(() => {
+      this.calculateDayButtonWidth();
+      this.checkScrollButtons();
+
+      // Escuchar cambios de tamaño de ventana
+      window.addEventListener('resize', () => {
+        this.calculateDayButtonWidth();
+      });
+    }, 100);
   }
 
-  generateDaysInMonth() {
-    const year = this.currentMonth.getFullYear();
-    const month = this.currentMonth.getMonth();
-    const daysCount = new Date(year, month + 1, 0).getDate();
-
+  generateDaysForMultipleMonths() {
+    // Generamos 3 meses: actual, siguiente y subsiguiente
     this.daysInMonth = [];
-    for (let i = 1; i <= daysCount; i++) {
-      const date = new Date(year, month, i);
-      this.daysInMonth.push(new Day(i, date));
+
+    for (let monthOffset = 0; monthOffset < 3; monthOffset++) {
+      const date = new Date(this.currentMonth.getFullYear(), this.currentMonth.getMonth() + monthOffset, 1);
+      const year = date.getFullYear();
+      const month = date.getMonth();
+      const daysCount = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 1; i <= daysCount; i++) {
+        const dayDate = new Date(year, month, i);
+        this.daysInMonth.push(new Day(i, dayDate));
+      }
+    }
+  }
+
+  calculateDayButtonWidth() {
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      const firstButton = container.querySelector('.day-button') as HTMLElement;
+
+      if (firstButton) {
+        // Obtenemos el ancho real del botón incluyendo borders y padding
+        this.dayButtonWidth = firstButton.offsetWidth;
+
+        // Obtenemos el gap del estilo calculado
+        const gridElement = container.querySelector('.days-grid') as HTMLElement;
+        if (gridElement) {
+          const computedStyle = window.getComputedStyle(gridElement);
+          const gap = computedStyle.gap || computedStyle.columnGap;
+          this.gapSize = parseFloat(gap) || 12;
+        }
+      }
     }
   }
 
@@ -72,16 +107,38 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit {
   }
 
   scrollLeft() {
-    if (this.scrollContainer) {
+    if (this.scrollContainer && this.dayButtonWidth > 0) {
       const container = this.scrollContainer.nativeElement;
-      container.scrollBy({ left: -400, behavior: 'smooth' });
+      const containerWidth = container.clientWidth;
+      const itemWidth = this.dayButtonWidth + this.gapSize;
+
+      // Calculamos cuántos días completos caben en el viewport
+      const visibleDaysCount = Math.floor(containerWidth / itemWidth);
+
+      // Desplazamos el ancho de (visibleDaysCount - 2) días para que el último visible
+      // de forma completa se convierta en el primero, es decir, no tenemos en cuenta
+      // los dos días parcialmente visibles
+      const scrollAmount = (visibleDaysCount - 2) * itemWidth;
+
+      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
     }
   }
 
   scrollRight() {
-    if (this.scrollContainer) {
+    if (this.scrollContainer && this.dayButtonWidth > 0) {
       const container = this.scrollContainer.nativeElement;
-      container.scrollBy({ left: 400, behavior: 'smooth' });
+      const containerWidth = container.clientWidth;
+      const itemWidth = this.dayButtonWidth + this.gapSize;
+
+      // Calculamos cuántos días completos caben en el viewport
+      const visibleDaysCount = Math.floor(containerWidth / itemWidth);
+
+      // Desplazamos el ancho de (visibleDaysCount - 2) días para que el último visible
+      // de forma completa se convierta en el primero, es decir, no tenemos en cuenta
+      // los dos días parcialmente visibles
+      const scrollAmount = (visibleDaysCount - 2) * itemWidth;
+
+      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
     }
   }
 
@@ -93,13 +150,17 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit {
     if (this.scrollContainer) {
       const container = this.scrollContainer.nativeElement;
       this.canScrollLeft = container.scrollLeft > 0;
-      this.canScrollRight = 
+      this.canScrollRight =
         container.scrollLeft < container.scrollWidth - container.clientWidth - 1;
     }
   }
 
   getMonthName(): string {
     return this.currentMonth.toLocaleString('en-US', { month: 'short' });
+  }
+
+  getMonthNameForDay(day: Day): string {
+    return day.time.toLocaleString('en-US', { month: 'short' });
   }
 
   writeValue(value: any): void {
@@ -114,5 +175,12 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit {
 
   registerOnTouched(fn: any): void {
     this.onTouched = fn;
+  }
+
+  ngOnDestroy() {
+    // Limpiamos el listener de resize
+    window.removeEventListener('resize', () => {
+      this.calculateDayButtonWidth();
+    });
   }
 }
