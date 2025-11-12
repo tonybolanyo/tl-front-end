@@ -5,6 +5,7 @@
 @use "../../styles/transitions/transition" as transition;
 @use "../../styles/shadows/box-shadow" as shadow;
 @use "../../styles/containers/border-radius" as br;
+@use "sass:color";
 
 .selector-container {
   width: 100%;
@@ -62,7 +63,7 @@
   }
 
   &.selected {
-    background-color: lighten(palette.$brand-primary, 50%);
+    background-color: color.scale(palette.$brand-primary, $lightness: 85%);
     border-color: palette.$brand-primary;
     color: palette.$brand-primary;
     @include shadow.box-shadow(none);
