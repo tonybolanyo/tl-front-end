@@ -8,14 +8,20 @@
     </p>
   </app-box>
   <app-box class="component">
-    <form [formGroup]="form" novalidate>
-      <img class="fake-component" src="assets/fake-component.png" />
+    <form [formGroup]="form"
+          novalidate>
+      <img class="fake-component"
+           src="assets/fake-component.png" />
       <!--<app-selector></app-selector>-->
+      <app-selector [days]="days"
+                    [multiple]="true"
+                    formControlName="selectedDays"></app-selector>
     </form>
   </app-box>
   <app-box class="component-description">
     <h3>TODO</h3>
-    <img src="assets/component-interface.png" alt="Component interface" />
+    <img src="assets/component-interface.png"
+         alt="Component interface" />
     <h4>Basic</h4>
     <ul>
       <li>Design the component using CSS and HTML.</li>
@@ -78,6 +84,7 @@
   </app-box>
   <app-box>
     <h3>DEMO</h3>
-    <video src="assets/demo.mp4" controls></video>
+    <video src="assets/demo.mp4"
+           controls></video>
   </app-box>
 </div>

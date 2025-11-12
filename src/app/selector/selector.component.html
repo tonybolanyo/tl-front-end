@@ -1,0 +1,25 @@
+<div class="selector-container">
+  <div class="days-grid">
+    <button *ngFor="let day of daysInMonth"
+            class="day-button"
+            [class.selected]="isSelected(day)"
+            (click)="selectDay(day)"
+            type="button">
+      <span class="day-number">{{ day.id }}</span>
+      <span class="day-month">{{ getMonthName() }}</span>
+    </button>
+  </div>
+
+  <div class="navigation">
+    <button class="nav-button nav-previous"
+            (click)="previousMonth()"
+            type="button">
+      Previous
+    </button>
+    <button class="nav-button nav-next"
+            (click)="nextMonth()"
+            type="button">
+      Next
+    </button>
+  </div>
+</div>

@@ -7,12 +7,13 @@ import {
 } from '@angular/forms';
 import { BoxComponent } from './shared/box/box.component';
 import { HeaderComponent } from './header/header.component';
+import { SelectorComponent } from './selector/selector.component';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
-  imports: [BoxComponent, HeaderComponent, ReactiveFormsModule],
+  imports: [BoxComponent, HeaderComponent, ReactiveFormsModule, SelectorComponent],
 })
 export class AppComponent implements OnInit {
   days: Array<Day> = [];
