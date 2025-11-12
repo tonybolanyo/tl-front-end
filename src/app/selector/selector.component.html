@@ -1,23 +1,36 @@
 <div class="selector-container">
-  <div class="days-grid">
-    <button *ngFor="let day of daysInMonth"
-            class="day-button"
-            [class.selected]="isSelected(day)"
-            (click)="selectDay(day)"
-            type="button">
-      <span class="day-number">{{ day.id }}</span>
-      <span class="day-month">{{ getMonthName() }}</span>
-    </button>
+  <div class="days-wrapper">
+    <div class="gradient-left"
+         [class.visible]="canScrollLeft"></div>
+    <div class="gradient-right"
+         [class.visible]="canScrollRight"></div>
+
+    <div class="days-scroll"
+         #scrollContainer
+         (scroll)="onScroll()">
+      <div class="days-grid">
+        <button *ngFor="let day of daysInMonth"
+                class="day-button"
+                [class.selected]="isSelected(day)"
+                (click)="selectDay(day)"
+                type="button">
+          <span class="day-number">{{ day.id }}</span>
+          <span class="day-month">{{ getMonthName() }}</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <div class="navigation">
-    <button class="nav-button nav-previous"
-            (click)="previousMonth()"
+    <button class="btn btn-sm nav-button"
+            (click)="scrollLeft()"
+            [disabled]="!canScrollLeft"
             type="button">
       Previous
     </button>
-    <button class="nav-button nav-next"
-            (click)="nextMonth()"
+    <button class="btn btn-sm nav-button"
+            (click)="scrollRight()"
+            [disabled]="!canScrollRight"
             type="button">
       Next
     </button>

@@ -16,6 +16,7 @@ $enable-rounded: true !default;
 $border-color-default: p.$thin-lines;
 $border-default: solid 1px $border-color-default !default;
 $border-radius-default: 5px !default;
+$border-radius-calendar: 2px !default;
 
 // Shadows
 $enable-shadows: true !default;

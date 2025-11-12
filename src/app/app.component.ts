@@ -1,13 +1,13 @@
 import { Component, OnInit } from '@angular/core';
-import { Day } from './selector/day';
 import {
   ReactiveFormsModule,
   UntypedFormBuilder,
   UntypedFormGroup,
 } from '@angular/forms';
-import { BoxComponent } from './shared/box/box.component';
 import { HeaderComponent } from './header/header.component';
+import { Day } from './selector/day';
 import { SelectorComponent } from './selector/selector.component';
+import { BoxComponent } from './shared/box/box.component';
 
 @Component({
   selector: 'app-root',

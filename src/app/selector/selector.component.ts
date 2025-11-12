@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input, forwardRef } from '@angular/core';
+import { Component, Input, forwardRef, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Day } from './day';
 
@@ -17,20 +17,27 @@ import { Day } from './day';
     }
   ]
 })
-export class SelectorComponent implements ControlValueAccessor {
+export class SelectorComponent implements ControlValueAccessor, AfterViewInit {
   @Input() days: Day[] = [];
   @Input() multiple: boolean = false;
   @Input() formControlName: string = '';
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef;
 
   selectedDays: Day[] = [];
   currentMonth: Date = new Date();
   daysInMonth: Day[] = [];
+  canScrollLeft: boolean = false;
+  canScrollRight: boolean = false;
 
   private onChange: (value: any) => void = () => { };
   private onTouched: () => void = () => { };
 
   ngOnInit() {
     this.generateDaysInMonth();
+  }
+
+  ngAfterViewInit() {
+    setTimeout(() => this.checkScrollButtons(), 100);
   }
 
   generateDaysInMonth() {
@@ -64,22 +71,31 @@ export class SelectorComponent implements ControlValueAccessor {
     return this.selectedDays.some(d => d.id === day.id);
   }
 
-  previousMonth() {
-    this.currentMonth = new Date(
-      this.currentMonth.getFullYear(),
-      this.currentMonth.getMonth() - 1,
-      1
-    );
-    this.generateDaysInMonth();
+  scrollLeft() {
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      container.scrollBy({ left: -400, behavior: 'smooth' });
+    }
   }
 
-  nextMonth() {
-    this.currentMonth = new Date(
-      this.currentMonth.getFullYear(),
-      this.currentMonth.getMonth() + 1,
-      1
-    );
-    this.generateDaysInMonth();
+  scrollRight() {
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      container.scrollBy({ left: 400, behavior: 'smooth' });
+    }
+  }
+
+  onScroll() {
+    this.checkScrollButtons();
+  }
+
+  checkScrollButtons() {
+    if (this.scrollContainer) {
+      const container = this.scrollContainer.nativeElement;
+      this.canScrollLeft = container.scrollLeft > 0;
+      this.canScrollRight = 
+        container.scrollLeft < container.scrollWidth - container.clientWidth - 1;
+    }
   }
 
   getMonthName(): string {
