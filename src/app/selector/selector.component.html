@@ -23,13 +23,13 @@
 
   <div class="navigation">
     <button class="btn btn-sm nav-button"
-            (click)="scrollLeft()"
+            (click)="scroll(ScrollDirection.Left)"
             [disabled]="!canScrollLeft"
             type="button">
       Previous
     </button>
     <button class="btn btn-sm nav-button"
-            (click)="scrollRight()"
+            (click)="scroll(ScrollDirection.Right)"
             [disabled]="!canScrollRight"
             type="button">
       Next

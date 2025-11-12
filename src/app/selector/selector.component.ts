@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnDestroy, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Day } from './day';
+import { ScrollDirection } from './scroll-direction.enum';
 
 @Component({
   standalone: true,
@@ -22,6 +23,9 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit, O
   @Input() multiple: boolean = false;
   @Input() formControlName: string = '';
   @ViewChild('scrollContainer') scrollContainer!: ElementRef;
+
+  // Exponemos el enum para usarlo en el template
+  readonly ScrollDirection = ScrollDirection;
 
   selectedDays: Day[] = [];
   currentMonth: Date = new Date();
@@ -106,7 +110,7 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit, O
     return this.selectedDays.some(d => d.id === day.id);
   }
 
-  scrollLeft() {
+  scroll(direction: ScrollDirection) {
     if (this.scrollContainer && this.dayButtonWidth > 0) {
       const container = this.scrollContainer.nativeElement;
       const containerWidth = container.clientWidth;
@@ -120,25 +124,10 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit, O
       // los dos días parcialmente visibles
       const scrollAmount = (visibleDaysCount - 2) * itemWidth;
 
-      container.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
-    }
-  }
-
-  scrollRight() {
-    if (this.scrollContainer && this.dayButtonWidth > 0) {
-      const container = this.scrollContainer.nativeElement;
-      const containerWidth = container.clientWidth;
-      const itemWidth = this.dayButtonWidth + this.gapSize;
-
-      // Calculamos cuántos días completos caben en el viewport
-      const visibleDaysCount = Math.floor(containerWidth / itemWidth);
-
-      // Desplazamos el ancho de (visibleDaysCount - 2) días para que el último visible
-      // de forma completa se convierta en el primero, es decir, no tenemos en cuenta
-      // los dos días parcialmente visibles
-      const scrollAmount = (visibleDaysCount - 2) * itemWidth;
-
-      container.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+      container.scrollBy({
+        left: direction === ScrollDirection.Left ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
     }
   }
 
