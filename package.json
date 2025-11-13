@@ -8,7 +8,12 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "test:coverage": "ng test --code-coverage --no-watch --browsers=ChromeHeadless",
-    "test:selector": "ng test --include='**/selector.component.spec.ts' --code-coverage --no-watch --browsers=ChromeHeadless"
+    "test:selector": "ng test --include='**/selector.component.spec.ts' --code-coverage --no-watch --browsers=ChromeHeadless",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:headed": "playwright test --headed",
+    "e2e:debug": "playwright test --debug",
+    "e2e:report": "playwright show-report"
   },
   "private": true,
   "dependencies": {
@@ -29,6 +34,7 @@
     "@angular/build": "^20.3.2",
     "@angular/cli": "^20.3.2",
     "@angular/compiler-cli": "^20.3.1",
+    "@playwright/test": "^1.48.0",
     "@types/jasmine": "~3.10.0",
     "@types/node": "^12.11.1",
     "jasmine-core": "~4.0.0",

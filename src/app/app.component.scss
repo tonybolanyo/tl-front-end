@@ -30,6 +30,10 @@ app-header {
   .fake-component {
     width: 100%;
   }
+
+  .calendar-selector {
+    margin-bottom: vars.$margin-default;
+  }
 }
 
 h3 {

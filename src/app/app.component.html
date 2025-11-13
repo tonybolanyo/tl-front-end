@@ -13,9 +13,16 @@
       <img class="fake-component"
            src="assets/fake-component.png" />
       <!--<app-selector></app-selector>-->
-      <app-selector [days]="days"
+      <app-selector data-testid="multiple-days-selector"
+                    class="calendar-selector"
+                    [days]="days"
                     [multiple]="true"
                     formControlName="selectedDays"></app-selector>
+      <app-selector data-testid="single-day-selector"
+                    class="calendar-selector"
+                    [days]="days"
+                    [multiple]="false"
+                    formControlName="selectedDay"></app-selector>
     </form>
   </app-box>
   <app-box class="component-description">
