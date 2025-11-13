@@ -1,24 +1,26 @@
-import {ControlValueAccessor} from '@angular/forms';
+import { ControlValueAccessor } from '@angular/forms';
 
 export abstract class AbstractNgModel<T> implements ControlValueAccessor {
 
   public model!: T;
 
-  modelChange: any = () => {
-  }
+  modelChange: (value: T) => void = () => {
+    // This will be replaced by Angular's ControlValueAccessor
+  };
 
-  modelTouch: any = () => {
-  }
+  modelTouch: () => void = () => {
+    // This will be replaced by Angular's ControlValueAccessor
+  };
 
-  writeValue(obj: any): void {
+  writeValue(obj: T): void {
     this.model = obj;
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: T) => void): void {
     this.modelChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.modelTouch = fn;
   }
 

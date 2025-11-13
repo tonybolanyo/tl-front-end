@@ -1,17 +1,17 @@
 import {
-  Component,
-  Input,
-  QueryList,
-  ContentChildren,
   AfterContentInit,
-  Output,
+  Component,
+  ContentChildren,
   EventEmitter,
+  Input,
   OnInit,
+  Output,
+  QueryList,
 } from '@angular/core';
-import { AbstractNgModel } from '../model/abstract-ngmodel';
-import { SelectItemComponent } from './select-item.component';
-import { ngModelProvider } from '../model/ng-model-config';
 import { Subject } from 'rxjs';
+import { AbstractNgModel } from '../model/abstract-ngmodel';
+import { ngModelProvider } from '../model/ng-model-config';
+import { SelectItemComponent } from './select-item.component';
 import { ISelectComponent, SELECT_COMPONENT_TOKEN } from './select.interface';
 
 @Component({
@@ -28,10 +28,9 @@ import { ISelectComponent, SELECT_COMPONENT_TOKEN } from './select.interface';
   ],
   imports: [SelectItemComponent],
 })
-export class SelectComponent
-  extends AbstractNgModel<any>
-  implements OnInit, AfterContentInit, ISelectComponent
-{
+export class SelectComponent<T = unknown>
+  extends AbstractNgModel<T | T[] | undefined>
+  implements OnInit, AfterContentInit, ISelectComponent {
   @Input()
   multiple = false;
 
@@ -49,16 +48,16 @@ export class SelectComponent
   alwaysOneSelected = false;
 
   @Output()
-  change = new EventEmitter<any>();
+  change = new EventEmitter<T | T[] | undefined>();
 
   @ContentChildren(SelectItemComponent)
-  children!: QueryList<SelectItemComponent>;
+  children!: QueryList<SelectItemComponent<T>>;
 
-  private modelChecker = new Subject<any>();
+  private modelChecker = new Subject<T | T[] | undefined>();
 
   ngOnInit(): void {
     if (this.multiple) {
-      this.model = [];
+      this.model = [] as T[];
     }
   }
 
@@ -66,9 +65,9 @@ export class SelectComponent
     this.modelChecker.subscribe(() => this.doCheck());
   }
 
-  override writeValue(obj: any): void {
+  override writeValue(obj: T | T[] | undefined): void {
     if (this.multiple && !Array.isArray(obj)) {
-      this.model = [];
+      this.model = [] as T[];
     } else {
       this.model = obj;
     }
@@ -79,7 +78,7 @@ export class SelectComponent
     if (this.multiple) {
       this.children.forEach((child) => {
         child.selected =
-          this.model.filter((id: any) => child.value === id).length > 0;
+          (this.model as T[]).filter((id: T) => child.value === id).length > 0;
       });
     } else {
       if (typeof this.model !== 'undefined') {
@@ -93,18 +92,19 @@ export class SelectComponent
     }
   }
 
-  onSelect(child: SelectItemComponent) {
+  onSelect(child: SelectItemComponent<T>) {
     if (this.multiple) {
-      const idx = this.model.indexOf(child.value);
+      const model = this.model as T[];
+      const idx = model.indexOf(child.value);
       if (idx >= 0) {
-        if (!(this.alwaysOneSelected && this.model.length === 1)) {
-          this.model.splice(idx, 1);
+        if (!(this.alwaysOneSelected && model.length === 1)) {
+          model.splice(idx, 1);
           child.selected = false;
           this.notify();
         }
       } else {
-        if (!this.max || this.model.length < this.max) {
-          this.model.push(child.value);
+        if (!this.max || model.length < this.max) {
+          model.push(child.value);
           child.selected = true;
           this.notify();
         }
@@ -117,7 +117,7 @@ export class SelectComponent
           this.notify();
         }
       } else {
-        this.model = child.value;
+        this.model = child.value as T;
         this.unselectOthers(child);
         child.selected = true;
         this.notify();
@@ -130,7 +130,7 @@ export class SelectComponent
     this.change.emit(this.model);
   }
 
-  private unselectOthers(child: SelectItemComponent) {
+  private unselectOthers(child: SelectItemComponent<T>) {
     this.children.forEach((c) => {
       if (c !== child) {
         c.selected = false;

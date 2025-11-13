@@ -1,10 +1,10 @@
 import {
   Component,
-  Input,
-  HostListener,
-  HostBinding,
   Host,
+  HostBinding,
+  HostListener,
   Inject,
+  Input,
   Optional,
 } from '@angular/core';
 import { ISelectComponent, SELECT_COMPONENT_TOKEN } from './select.interface';
@@ -15,9 +15,9 @@ import { ISelectComponent, SELECT_COMPONENT_TOKEN } from './select.interface';
   templateUrl: './select-item.component.html',
   styleUrls: ['./select-item.component.scss'],
 })
-export class SelectItemComponent {
+export class SelectItemComponent<T = unknown> {
   @Input()
-  value: any;
+  value!: T;
 
   @HostBinding('class.selected')
   selected = false;
@@ -27,7 +27,7 @@ export class SelectItemComponent {
     @Optional()
     @Inject(SELECT_COMPONENT_TOKEN)
     private parent?: ISelectComponent,
-  ) {}
+  ) { }
 
   @HostListener('click')
   click() {

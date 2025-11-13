@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnDestroy, ViewChild, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Day } from './day';
 import { ScrollDirection } from './scroll-direction.enum';
@@ -35,8 +35,12 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit, O
   private dayButtonWidth: number = 0;
   private gapSize: number = 12;
 
-  private onChange: (value: any) => void = () => { };
-  private onTouched: () => void = () => { };
+  private onChange: (value: Day | Day[] | null) => void = () => {
+    // This will be replaced by Angular's ControlValueAccessor
+  };
+  private onTouched: () => void = () => {
+    // This will be replaced by Angular's ControlValueAccessor
+  };
 
   ngOnInit() {
     this.generateDaysForMultipleMonths();
@@ -152,17 +156,21 @@ export class SelectorComponent implements ControlValueAccessor, AfterViewInit, O
     return day.time.toLocaleString('en-US', { month: 'short' });
   }
 
-  writeValue(value: any): void {
+  trackByDay(_index: number, day: Day): number {
+    return day.id;
+  }
+
+  writeValue(value: Day | Day[] | null): void {
     if (value) {
-      this.selectedDays = value;
+      this.selectedDays = Array.isArray(value) ? value : [value];
     }
   }
 
-  registerOnChange(fn: any): void {
+  registerOnChange(fn: (value: Day | Day[] | null) => void): void {
     this.onChange = fn;
   }
 
-  registerOnTouched(fn: any): void {
+  registerOnTouched(fn: () => void): void {
     this.onTouched = fn;
   }
 

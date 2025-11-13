@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   standalone: true,
@@ -6,8 +6,5 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './box.component.html',
   styleUrls: ['./box.component.scss'],
 })
-export class BoxComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit() {}
+export class BoxComponent {
 }

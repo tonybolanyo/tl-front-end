@@ -1,7 +1,7 @@
-import {NG_VALUE_ACCESSOR, NG_VALIDATORS} from '@angular/forms';
-import {forwardRef} from '@angular/core';
+import { forwardRef, Provider, Type } from '@angular/core';
+import { NG_VALIDATORS, NG_VALUE_ACCESSOR } from '@angular/forms';
 
-export function ngModelProvider(type: any): any {
+export function ngModelProvider(type: Type<unknown>): Provider {
   return {
     provide: NG_VALUE_ACCESSOR,
     useExisting: forwardRef(() => type),
@@ -9,7 +9,7 @@ export function ngModelProvider(type: any): any {
   };
 }
 
-export function ngModelValidationProvider(type: any): any {
+export function ngModelValidationProvider(type: Type<unknown>): Provider {
   return {
     provide: NG_VALIDATORS,
     useExisting: forwardRef(() => type),

@@ -1,5 +1,5 @@
 export class Day {
 
-  constructor(public id: any, public time: Date) {
+  constructor(public id: number, public time: Date) {
   }
 }
