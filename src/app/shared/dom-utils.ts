@@ -2,15 +2,15 @@ export function calculateElementWidth(
   element: HTMLElement,
   includeMargin: boolean = false
 ): number {
-  let style = window.getComputedStyle(element);
-  let width = element.offsetWidth;
+  const style = window.getComputedStyle(element);
+  const width = element.offsetWidth;
   let margin = 0,
     padding = 0;
   if (includeMargin) {
     margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
     padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
   }
-  let border =
+  const border =
     parseFloat(style.borderLeftWidth) + parseFloat(style.borderRightWidth);
 
   return width + margin - padding + border;
@@ -20,15 +20,15 @@ export function calculateElementHeight(
   element: HTMLElement,
   includeMargin: boolean = false
 ): number {
-  let style = window.getComputedStyle(element);
-  let height = element.offsetHeight;
+  const style = window.getComputedStyle(element);
+  const height = element.offsetHeight;
   let margin = 0,
     padding = 0;
   if (includeMargin) {
     margin = parseFloat(style.marginLeft) + parseFloat(style.marginRight);
     padding = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight);
   }
-  let border =
+  const border =
     parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
 
   return height + margin - padding + border;

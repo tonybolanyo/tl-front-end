@@ -83,7 +83,7 @@ export class SelectComponent
       });
     } else {
       if (typeof this.model !== 'undefined') {
-        let selectedChild = this.children.find(
+        const selectedChild = this.children.find(
           (child) => child.value === this.model,
         );
         if (selectedChild) {
@@ -95,7 +95,7 @@ export class SelectComponent
 
   onSelect(child: SelectItemComponent) {
     if (this.multiple) {
-      let idx = this.model.indexOf(child.value);
+      const idx = this.model.indexOf(child.value);
       if (idx >= 0) {
         if (!(this.alwaysOneSelected && this.model.length === 1)) {
           this.model.splice(idx, 1);

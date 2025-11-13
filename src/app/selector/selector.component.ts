@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnDestroy, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, forwardRef, Input, OnDestroy, ViewChild, OnInit } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { Day } from './day';
 import { ScrollDirection } from './scroll-direction.enum';
@@ -18,7 +18,7 @@ import { ScrollDirection } from './scroll-direction.enum';
     }
   ]
 })
-export class SelectorComponent implements ControlValueAccessor, AfterViewInit, OnDestroy {
+export class SelectorComponent implements ControlValueAccessor, AfterViewInit, OnDestroy, OnInit {
   @Input() days: Day[] = [];
   @Input() multiple: boolean = false;
   @Input() formControlName: string = '';
